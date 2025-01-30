@@ -2,6 +2,35 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+        <!-- Existing keys -->
+    
+    <!-- Location Usage Descriptions -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open to show your current location on the map and provide accurate pickup/dropoff points.</string>
+    
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs access to location when in the background for navigation and ride tracking.</string>
+    
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to location to provide accurate ride-hailing services and navigation.</string>
+    
+    <!-- Google Maps -->
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
+    
+    <!-- Internet Access -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    
+    <!-- Background Location -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+    </array>
+	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
