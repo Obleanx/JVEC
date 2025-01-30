@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:jvec/bindings/map_bindings.dart';
 import 'package:jvec/views/screens/login_screen.dart';
 
 void main() {
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      initialBinding: MapBinding(), // Add this line
+
       home: LoginScreen(),
       debugShowCheckedModeBanner: false,
     );

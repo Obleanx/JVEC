@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:jvec/controllers/map_controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MapScreen extends GetView<MapController> {
-  const MapScreen({super.key});
+class MapScreen extends StatelessWidget {
+  final MapController controller = Get.put(MapController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class MapScreen extends GetView<MapController> {
                 onMapCreated: (GoogleMapController mapController) {
                   controller.mapController = mapController;
                 },
-                markers: controller.markers,
+                markers: controller.markers.toSet(),
                 myLocationEnabled: true,
                 myLocationButtonEnabled: false,
                 onTap: controller.onMapTap,

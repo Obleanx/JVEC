@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:jvec/bindings/map_bindings.dart';
 import 'package:jvec/views/screens/map_screens.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -43,8 +44,9 @@ class LoginScreen extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  // For now, just navigate to map screen
-                  Get.off(() => MapScreen());
+                  Get.to(() => MapScreen(), binding: MapBinding());
+                  // Or if you don't want to go back to login:
+                  // Get.off(() => MapScreen(), binding: MapBinding());
                 },
                 child: const Text('Login'),
               ),
