@@ -1,29 +1,71 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:jvec/controllers/map_controllers.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatelessWidget {
-  final MapController controller = Get.put(MapController());
+  final RideMapController controller = Get.put(RideMapController());
+
+  MapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Obx(() => GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target:
+          Obx(() => FlutterMap(
+                mapController: controller.mapController,
+                options: MapOptions(
+                  initialCenter:
                       controller.currentLocation.value ?? const LatLng(0, 0),
-                  zoom: 15,
+                  initialZoom: 15,
+                  onTap: (tapPosition, point) => controller.onMapTap(point),
                 ),
-                onMapCreated: (GoogleMapController mapController) {
-                  controller.mapController = mapController;
-                },
-                markers: controller.markers.toSet(),
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                onTap: controller.onMapTap,
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    userAgentPackageName: 'com.example.jvec',
+                  ),
+                  Obx(() => MarkerLayer(
+                        markers: [
+                          if (controller.currentLocation.value != null)
+                            Marker(
+                              point: controller.currentLocation.value!,
+                              width: 40,
+                              height: 40,
+                              child: const Icon(
+                                Icons.location_on,
+                                color: Colors.blue,
+                                size: 40,
+                              ),
+                            ),
+                          if (controller.pickupLocation.value != null)
+                            Marker(
+                              point: controller.pickupLocation.value!,
+                              width: 40,
+                              height: 40,
+                              child: const Icon(
+                                Icons.location_on,
+                                color: Colors.green,
+                                size: 40,
+                              ),
+                            ),
+                          if (controller.dropoffLocation.value != null)
+                            Marker(
+                              point: controller.dropoffLocation.value!,
+                              width: 40,
+                              height: 40,
+                              child: const Icon(
+                                Icons.location_on,
+                                color: Colors.red,
+                                size: 40,
+                              ),
+                            ),
+                        ],
+                      )),
+                ],
               )),
           Positioned(
             top: 50,
@@ -49,8 +91,8 @@ class MapScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 30,
-            right: 20,
+            bottom: 100,
+            right: 50,
             child: FloatingActionButton(
               onPressed: controller.getCurrentLocation,
               child: const Icon(Icons.my_location),

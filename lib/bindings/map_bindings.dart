@@ -4,6 +4,6 @@ import 'package:jvec/controllers/map_controllers.dart';
 class MapBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(MapController());
+    Get.put(RideMapController());
   }
 }

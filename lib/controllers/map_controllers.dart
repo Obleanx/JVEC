@@ -1,21 +1,19 @@
 import 'dart:math';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:jvec/models/drivers_models.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
-class MapController extends GetxController {
+class RideMapController extends GetxController {
   final currentLocation = Rx<LatLng?>(null);
   final pickupLocation = Rx<LatLng?>(null);
   final dropoffLocation = Rx<LatLng?>(null);
-  final markers = RxSet<Marker>();
   final isLoading = false.obs;
   final driverFound = false.obs;
   final isSearchingDriver = false.obs;
-
-  GoogleMapController? mapController;
+  final mapController = MapController();
 
   @override
   void onInit() {
@@ -39,48 +37,12 @@ class MapController extends GetxController {
       Position position = await Geolocator.getCurrentPosition();
       currentLocation.value = LatLng(position.latitude, position.longitude);
 
-      if (mapController != null) {
-        mapController!.animateCamera(
-          CameraUpdate.newLatLngZoom(currentLocation.value!, 15),
-        );
-      }
-
-      updateMarkers();
+      // Animate to current location
+      mapController.move(currentLocation.value!, 15);
     } catch (e) {
       Get.snackbar('Error', e.toString());
     } finally {
       isLoading.value = false;
-    }
-  }
-
-  void updateMarkers() {
-    markers.clear();
-
-    if (currentLocation.value != null) {
-      markers.add(Marker(
-        markerId: const MarkerId('current_location'),
-        position: currentLocation.value!,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-        infoWindow: const InfoWindow(title: 'Current Location'),
-      ));
-    }
-
-    if (pickupLocation.value != null) {
-      markers.add(Marker(
-        markerId: const MarkerId('pickup'),
-        position: pickupLocation.value!,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        infoWindow: const InfoWindow(title: 'Pickup Location'),
-      ));
-    }
-
-    if (dropoffLocation.value != null) {
-      markers.add(Marker(
-        markerId: const MarkerId('dropoff'),
-        position: dropoffLocation.value!,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        infoWindow: const InfoWindow(title: 'Dropoff Location'),
-      ));
     }
   }
 
@@ -91,7 +53,6 @@ class MapController extends GetxController {
       dropoffLocation.value = location;
       showRideRequestButton();
     }
-    updateMarkers();
   }
 
   void showRideRequestButton() {
@@ -222,6 +183,5 @@ class MapController extends GetxController {
     pickupLocation.value = null;
     dropoffLocation.value = null;
     driverFound.value = false;
-    updateMarkers();
   }
 }
