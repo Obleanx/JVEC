@@ -89,13 +89,6 @@ class RideMapController extends GetxController {
         mapController.move(currentLocation.value!, 15);
       });
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to get location: $e',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.TOP,
-      );
     } finally {
       isLoading.value = false;
     }
@@ -108,7 +101,7 @@ class RideMapController extends GetxController {
       pickupAddress.value = await getAddressFromLatLng(location);
       Get.snackbar(
         'Location Selected',
-        'Pickup location set at: ${pickupAddress.value}\nNow tap for destination.',
+        'Pickup location set at 456 Elm St, City, Country \nNow tap for destination.',
         backgroundColor: Colors.green,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
@@ -119,7 +112,7 @@ class RideMapController extends GetxController {
       dropoffAddress.value = await getAddressFromLatLng(location);
       Get.snackbar(
         'Perfect!',
-        'Destination set at: ${dropoffAddress.value}',
+        'Destination set at 123 Main St, City, Country',
         backgroundColor: Colors.blue.withOpacity(0.6),
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
@@ -145,17 +138,6 @@ class RideMapController extends GetxController {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              if (address != null &&
-                  address.isNotEmpty) // Only show if not empty
-                Text(
-                  address,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
             ],
           ),
         ),
@@ -349,9 +331,9 @@ class RideMapController extends GetxController {
             borderRadius: BorderRadius.circular(20),
           ),
           title: const Text(
-            'No Drivers Found',
+            'No Drivers Found near you at the moment',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Color(0xFF2E3192),
             ),
@@ -453,11 +435,6 @@ class RideMapController extends GetxController {
                       backgroundImage: const AssetImage('lib/images/kk10.png'),
                       backgroundColor:
                           Colors.grey[200], // Fallback background color
-                      child: const Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 24, // Adjust size if needed
-                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
